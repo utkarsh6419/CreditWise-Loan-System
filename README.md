@@ -1,71 +1,150 @@
 # 💳 CreditWise Loan Approval System
 
-> Machine Learning-based Loan Approval Prediction and Pre-Screening
+### Machine Learning-based Loan Approval Prediction & Pre-Screening
 
-CreditWise is an ML-assisted loan pre-screening project designed to predict whether a loan application is likely to be **Approved or Rejected** using historical applicant, financial, credit, employment, and loan information.
+[![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)](https://www.python.org/) [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML-orange?logo=scikit-learn)](https://scikit-learn.org/) [![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange?logo=jupyter)](https://jupyter.org/)
 
-The project addresses the problem of slow and inconsistent manual screening by providing a fast, data-driven first-level prediction while keeping **human verification in the final decision loop**.
+CreditWise is a machine learning project that predicts whether a loan application is likely to be **Approved or Rejected** using historical applicant, financial, employment, credit, and loan information.
 
-## 🎯 Problem
+The project addresses the manual screening problem described in the provided problem statement by creating a fast, consistent **first-level pre-screening aid** before final human verification. The system is intended to support loan officers, not replace responsible human decision-making.
 
-SecureTrust Bank's existing process requires loan officers to manually evaluate income, employment, credit history, and other application details. The supplied problem statement identifies this process as time-consuming, biased, and inconsistent. Incorrect screening can cause good customers to be rejected or high-risk customers to be approved.
+---
 
-CreditWise aims to learn patterns from historical applications and provide an initial **Approved / Rejected** prediction before final human verification.
+## 🎯 Problem Statement
 
-## 🚀 Objectives
+SecureTrust Bank serves customers across urban and rural regions of India. Its existing manual verification process requires loan officers to evaluate income, employment details, credit history, and other application information.
 
-- Inspect and clean historical loan data.
-- Handle missing values and inconsistent records.
-- Encode categorical variables for ML models.
-- Split data into training and testing sets.
+This process can be **time-consuming, biased, and inconsistent**, creating two major risks:
+
+- Good customers may be rejected, resulting in lost business.
+- High-risk customers may be approved, resulting in financial losses.
+
+CreditWise uses historical loan application data to learn patterns and provide an initial **Approved / Rejected** prediction before final human verification.
+
+📄 Full source problem statement: [`PROBLEM_STATEMENT.md`](./PROBLEM_STATEMENT.md)
+
+---
+
+## 🚀 Project Objectives
+
+- Analyze historical loan applications.
+- Handle missing and inconsistent data.
+- Encode categorical variables for machine learning.
+- Split the data into training and testing sets.
 - Scale features where appropriate.
-- Train and compare multiple classification algorithms.
-- Evaluate models using Accuracy, Precision, Recall, F1-score, and Confusion Matrix.
-- Select a suitable model based on the project's evaluation objective.
+- Train multiple classification models.
+- Compare models using multiple evaluation metrics.
+- Provide a foundation for a future interactive loan pre-screening application.
+
+---
 
 ## 📊 Dataset
 
-The provided dataset contains **1,000 records and 20 original columns** representing loan applicants. The target is `Loan_Approved` (`1 = Approved`, `0 = Rejected`).
+The provided dataset contains **1,000 loan application records and 20 original columns**.
 
-Key attributes include applicant/co-applicant income, employment status, age, marital status, dependents, credit score, existing loans, DTI ratio, savings, collateral value, requested loan amount, loan term, loan purpose, property area, education level, gender, and employer category.
+### Major Features
 
-## 🧠 ML Pipeline
+| Feature | Description |
+|---|---|
+| `Applicant_ID` | Unique applicant identifier |
+| `Applicant_Income` | Monthly applicant income |
+| `Coapplicant_Income` | Monthly co-applicant income |
+| `Employment_Status` | Salaried / Self-Employed / Business |
+| `Age` | Applicant age |
+| `Marital_Status` | Married / Single |
+| `Dependents` | Number of dependents |
+| `Credit_Score` | Credit bureau score |
+| `Existing_Loans` | Number of existing loans |
+| `DTI_Ratio` | Debt-to-income ratio |
+| `Savings` | Savings balance |
+| `Collateral_Value` | Value of collateral provided |
+| `Loan_Amount` | Requested loan amount |
+| `Loan_Term` | Loan duration in months |
+| `Loan_Purpose` | Home / Education / Personal / Business |
+| `Property_Area` | Urban / Semi-Urban / Rural |
+| `Education_Level` | Graduate / Postgraduate / Undergraduate |
+| `Gender` | Applicant gender |
+| `Employer_Category` | Govt / Private / Self |
+| `Loan_Approved` | Target: `1 = Approved`, `0 = Rejected` |
+
+---
+
+## 🧠 Machine Learning Workflow
 
 ```text
-Historical Loan Data
-        ↓
-Data Inspection & Cleaning
-        ↓
-Missing Value Handling
-        ↓
-Categorical Encoding
-        ↓
-80/20 Train-Test Split
-        ↓
-Feature Scaling
-        ↓
-┌───────────────┬───────────────┬───────────────┐
-│ Logistic      │ K-Nearest     │ Gaussian      │
-│ Regression    │ Neighbors     │ Naive Bayes   │
-└───────┬───────┴───────┬───────┴───────┬───────┘
-        └───────────────┼───────────────┘
-                        ↓
-              Model Evaluation
-                        ↓
-              Approved / Rejected
+                  ┌────────────────────────┐
+                  │ Historical Loan Data   │
+                  └────────────┬───────────┘
+                               ↓
+                  ┌────────────────────────┐
+                  │ Data Inspection & EDA  │
+                  └────────────┬───────────┘
+                               ↓
+                  ┌────────────────────────┐
+                  │ Missing Value Handling │
+                  └────────────┬───────────┘
+                               ↓
+                  ┌────────────────────────┐
+                  │ Feature Preprocessing  │
+                  │ Encoding + Scaling     │
+                  └────────────┬───────────┘
+                               ↓
+                  ┌────────────────────────┐
+                  │ Train / Test Split     │
+                  │       80% / 20%        │
+                  └────────────┬───────────┘
+                               ↓
+            ┌──────────────────┼──────────────────┐
+            ↓                  ↓                  ↓
+      ┌────────────┐     ┌────────────┐     ┌────────────┐
+      │ Logistic   │     │    KNN     │     │  Gaussian  │
+      │ Regression │     │            │     │ Naive Bayes│
+      └──────┬─────┘     └──────┬─────┘     └──────┬─────┘
+             └───────────────────┼──────────────────┘
+                                 ↓
+                     ┌──────────────────────┐
+                     │ Model Evaluation     │
+                     │ Accuracy / Precision │
+                     │ Recall / F1 / Matrix │
+                     └──────────┬───────────┘
+                                ↓
+                     ┌──────────────────────┐
+                     │ Approved / Rejected  │
+                     └──────────────────────┘
 ```
+
+---
 
 ## 🔧 Current Implementation
 
-The notebook uses OneHotEncoder with `drop="first"` and `handle_unknown="ignore"`, followed by an 80/20 train-test split with `random_state=42`. Numerical/model inputs are standardized using `StandardScaler`.
+The primary implementation is contained in [`credit_wise.ipynb`](./credit_wise.ipynb).
 
-Three classifiers are currently evaluated:
+The notebook currently includes:
 
-1. **Logistic Regression**
-2. **K-Nearest Neighbors (KNN)** with `n_neighbors=5`
-3. **Gaussian Naive Bayes**
+- Dataset loading and inspection
+- Missing-value handling
+- Categorical encoding
+- Train/test splitting
+- Feature scaling using `StandardScaler`
+- Exploratory data analysis and visualizations
+- Classification model training
+- Model comparison
+- Confusion matrices
 
-## 📈 Current Results
+### Models Tested
+
+**1. Logistic Regression**  
+A linear classification baseline suitable for interpreting relationships between features and the binary approval target.
+
+**2. K-Nearest Neighbors (KNN)**  
+A distance-based classifier using `n_neighbors=5` in the current notebook.
+
+**3. Gaussian Naive Bayes**  
+A probabilistic classification approach based on Bayes' theorem with Gaussian assumptions for continuous inputs.
+
+---
+
+## 📈 Current Model Results
 
 Results reported by the executed notebook:
 
@@ -75,83 +154,144 @@ Results reported by the executed notebook:
 | KNN | 76.0% | 62.75% | 52.46% | 57.14% |
 | Naive Bayes | **86.5%** | **80.36%** | 73.77% | 76.92% |
 
-The current notebook selects **Naive Bayes based on Precision**. In a real lending environment, final model selection should consider business costs, calibration, fairness, false approvals, false rejections, and regulatory requirements rather than one metric alone.
+The current notebook selects **Naive Bayes based on Precision**.
 
-## 🧪 Evaluation
+> **Important:** These are experimental results from the current notebook and should not be interpreted as production-level credit-decision performance.
 
-CreditWise evaluates:
+---
 
-- **Accuracy:** overall proportion of correct predictions.
-- **Precision:** correctness of positive/approval predictions.
-- **Recall:** proportion of actual approvals correctly identified.
-- **F1-score:** balance between precision and recall.
-- **Confusion Matrix:** breakdown of true/false positives and negatives.
+## 🧪 Evaluation Metrics
+
+CreditWise evaluates models using:
+
+- **Accuracy**: overall percentage of correct predictions.
+- **Precision**: how many predicted approvals are actually approvals.
+- **Recall**: how many actual approvals are correctly identified.
+- **F1 Score**: balance between precision and recall.
+- **Confusion Matrix**: shows true/false positives and negatives.
+
+For a real lending system, model selection should consider the different costs of false approvals and false rejections rather than relying on a single metric.
+
+---
 
 ## 📁 Repository Structure
 
 ```text
 CreditWise-Loan-System/
+│
 ├── README.md
 ├── PROBLEM_STATEMENT.md
 ├── credit_wise.ipynb
 ├── loan_approval_data.csv
 ├── requirements.txt
 ├── .gitignore
+│
 ├── src/
 │   └── README.md
+│
 ├── app/
 │   └── README.md
+│
 └── models/
     └── README.md
 ```
 
+The `src`, `app`, and `models` directories currently document the planned project structure. The notebook remains the primary implementation for this first version.
+
+---
+
 ## 🛠️ Tech Stack
 
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Scikit-learn
-- Jupyter Notebook
+| Technology | Purpose |
+|---|---|
+| **Python** | Core programming language |
+| **Pandas** | Data loading and manipulation |
+| **NumPy** | Numerical operations |
+| **Matplotlib** | Visualization |
+| **Seaborn** | Statistical visualization |
+| **Scikit-learn** | Preprocessing, ML models and evaluation |
+| **Jupyter Notebook** | Development and experimentation |
+
+---
 
 ## ▶️ Run Locally
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/utkarsh6419/CreditWise-Loan-System.git
 cd CreditWise-Loan-System
+```
+
+### 2. Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
+
+### 3. Launch Jupyter
+
+```bash
 jupyter notebook
 ```
 
-Open `credit_wise.ipynb` and run the notebook with `loan_approval_data.csv` in the repository root.
+Open:
 
-## 🔐 Responsible AI & Limitations
+```text
+credit_wise.ipynb
+```
 
-Credit decisions have significant financial consequences. This repository represents a machine-learning experiment and pre-screening prototype, not a production credit-decision engine.
-
-A production system would require robust validation, cross-validation, fairness and bias testing, explainability, probability calibration, threshold analysis, privacy/security controls, model-drift monitoring, auditability, and appropriate human oversight and regulatory compliance.
-
-## 🔮 Roadmap
-
-- [ ] Build a reusable preprocessing pipeline
-- [ ] Add cross-validation and hyperparameter tuning
-- [ ] Compare additional classifiers
-- [ ] Add explainability and feature analysis
-- [ ] Add probability/risk scoring
-- [ ] Add fairness evaluation
-- [ ] Build a Streamlit interface
-- [ ] Serialize and version production models
-- [ ] Add API support
-- [ ] Add automated tests and CI/CD
-- [ ] Add model monitoring
-
-## 👨‍💻 Project
-
-**CreditWise Loan Approval System**  
-**Repository:** `utkarsh6419/CreditWise-Loan-System`  
-**Primary notebook:** `credit_wise.ipynb`
+Make sure `loan_approval_data.csv` remains in the repository root so the notebook can load the dataset.
 
 ---
 
-*Built as an ML-assisted loan pre-screening prototype with human verification retained for final decisions.*
+## 🔐 Responsible AI & Limitations
+
+Loan approval is a high-impact financial decision. CreditWise is currently an **educational ML prototype and pre-screening concept**, not a production credit-decision engine.
+
+A production-ready system would require additional work including:
+
+- Fairness and bias evaluation
+- Stronger validation and cross-validation
+- Model explainability
+- Probability calibration
+- Threshold and cost analysis
+- Data privacy and security
+- Model drift monitoring
+- Auditability
+- Human oversight
+- Appropriate regulatory compliance
+
+The purpose of the current project is to demonstrate the machine-learning workflow and provide a foundation for further development.
+
+---
+
+## 🔮 Future Roadmap
+
+- [ ] Improve preprocessing with reusable pipelines
+- [ ] Add cross-validation
+- [ ] Perform hyperparameter tuning
+- [ ] Compare additional ML algorithms
+- [ ] Add feature importance / explainability
+- [ ] Add approval probability or risk score
+- [ ] Build an interactive Streamlit application
+- [ ] Save and version trained models
+- [ ] Add prediction API
+- [ ] Add automated tests
+- [ ] Add GitHub Actions CI/CD
+- [ ] Add model monitoring
+
+---
+
+## 👨‍💻 Project Information
+
+**Project:** CreditWise Loan Approval System  
+**Repository:** `utkarsh6419/CreditWise-Loan-System`  
+**Primary implementation:** `credit_wise.ipynb`  
+**Dataset:** `loan_approval_data.csv`
+
+---
+
+### ⭐ About This Version
+
+This is the **first version of CreditWise**, focused on learning, experimentation, model comparison, and establishing a clean GitHub project foundation. Future versions can evolve the notebook into a complete deployable ML application.
